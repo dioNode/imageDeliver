@@ -1,125 +1,77 @@
+
+
 $(document).ready(function(){
 
-	fields = {minumumOrderQty: true,
-		cartonQty: true,
-		originalPrice: true,
-		discountQty: true,
-		discount: true,
-		discountedPrice: true};
+	var globalDataDict = {};
+	var globalHeadings = [];
 
 	$("#filename").change(function(e) {
-		var ext = $("input#filename").val().split(".").pop().toLowerCase();
-
-		if($.inArray(ext, ["csv"]) == -1) {
-			alert('Upload CSV');
-			return false;
-		}
-	    
-		var sku;
-		var name;
-		var min;
-		var price;
-		var disc;
-		var url;
-		var page = 0;
-
-		if (e.target.files != undefined) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				var csvval=e.target.result.split("\n");
-
-				adjustFields();
-
-
-				console.log(csvval.length);
-				for (var j=0; j<csvval.length-1; j++){
-					var nextpage = page+1;
-					var header = '<div class="header"> \
-										<img src="Kaper Kidz KD Logo.png"/> \
-										<div class="headerText">http://www.eleganter.com.au/</div> \
-									</div>';
-					var column = '<div class="column" onclick="promptColour(event)"> \
-											<div class="pagename" onclick="promptName(event)">Name</div> \
-											<div class="pagenum">'+nextpage+'</div> \
-										</div>';
-					if (j%10 == 0){
-						page++;
-						if ((page%2 == 0)&&!($("#singleSide").prop("checked"))){
-							var pagelayout = '<div class="page even" id="page'+page+'">'+column+header+'</div>';
-						} else {
-							var pagelayout = '<div class="page odd" id="page'+page+'">'+column+header+'</div>';
-						}
-						
-						$("#output").append(pagelayout);
-						
-					}
-					var csvvalue=csvval[j].split(",");
-					var inputrad="";
-					sku = csvvalue[0];
-					name = csvvalue[1];
-					min = csvvalue[2];
-					carton = csvvalue[3];
-					price = parseInt(csvvalue[4]).toFixed(2);
-					discount = csvvalue[5];
-					if (discount == ""){
-						discount = 10;
-					}
-					disc = csvvalue[6];
-					url = csvvalue[7];
-					console.log(url);
-					discountedPrice = (parseInt(price.replace('$','')) * (1-discount/100)).toFixed(2);
-					//console.log(discountedPrice);
-
-					inputrad = inputrad+sku+name+min+disc+url;
-
-					minimumOrderQtyString = '<div><b>Min order qty: </b>'+min+'</div>';
-					cartonQtyString = '<div><b>Carton qty: </b>'+carton+'</div>';
-					originalPriceString = '<div><b>Original price:</b> $'+price+'</div>';
-					discountQtyString = '<div><b>Discount qty: </b>'+disc+'</div>';
-					discountString = '<div><b>Discount:</b>'+discount+'%</div>';
-					discountedPriceString = '<div><b>Disc price:</b> $'+discountedPrice+'</div>';
-
-					fieldStrings = {minumumOrderQty: minimumOrderQtyString,
-						cartonQty:cartonQtyString,
-						originalPrice:originalPriceString,
-						discountQty:discountQtyString,
-						discount:discountString,
-						discountedPrice:discountedPriceString};
-
-					fieldString = ''
-
-					for (key in fields){
-						if (fields[key] == true){
-							fieldString += fieldStrings[key];
-							console.log(fieldStrings[key]);
-						}
-					}
-					
-					console.log(fieldString);
-
-					var product = '<div class="productSpace"> \
-							    		<img src="'+url+'"/> \
-							    		<div class = "details"> \
-							    			<div class="sku">'+sku+'</div> \
-							    			<div class="name">'+name+'</div> \
-							    			'+fieldString+'\
-							    		</div> \
-							    	</div>'
-					var pagenum = "#page"+page;
-					$(pagenum).append(product);
-					//console.log(inputrad);
-					
-				};				
-			}
-			reader.readAsText(e.target.files.item(0));
-		}
-		$("#filename").hide();
-		$("#side").hide();
+		computeCSVFile(e);
 
 		return false;
 
 	});
+
+	$("#genPDFBtn").click(function(){
+		$("#filename").hide();
+		$("#side").hide();
+		$("#genPDFBtn").hide();
+		generatePDF();
+	})
 })
+
+/** Generates a dictionary containing all the csv file data **/
+function computeCSVFile(e) {
+	var ext = $("input#filename").val().split(".").pop().toLowerCase();
+
+	if($.inArray(ext, ["csv"]) == -1) {
+		alert('Upload CSV');
+		return false;
+	}
+
+	if (e.target.files != undefined) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+
+			// Put all csv processing here
+			getDataDictionary(e);
+
+			headings = globalHeadings;
+			for (var headingIdx=0; headingIdx < headings.length; headingIdx++) {
+				var heading = headings[headingIdx];
+				$("#side").append('<p><input class="headingCheckbox" type="checkbox" id="'+heading+'" checked>'+heading+'</p>');
+			}
+			
+
+		}
+		reader.readAsText(e.target.files.item(0));
+	}
+}
+
+function getDataDictionary(e) {
+	var dataDict = {};
+	var csvval=e.target.result.split("\n");
+
+	var headings = csvval[0].split(',');
+	globalHeadings = headings;
+	var csvValueList = [];
+
+	for (var headingIdx=0; headingIdx < headings.length; headingIdx++){
+		csvValueList.push([]);
+	}
+
+	for (var rowIdx=1; rowIdx < csvval.length-1; rowIdx++) {
+		var columnValues = csvval[rowIdx].split(',');
+		for (var colIdx=0; colIdx < columnValues.length; colIdx++) {
+			csvValueList[colIdx].push(columnValues[colIdx]);
+		}
+	}
+
+	for (var headingIdx=0; headingIdx < headings.length; headingIdx++) {
+		dataDict[headings[headingIdx]] = csvValueList[headingIdx];
+	}
+	globalDataDict = dataDict;
+}
 
 function adjustFields(){
 	for (var key in fields){
@@ -143,43 +95,77 @@ function promptName(event){
 	event.stopPropagation();
 }
 
-function genPDF(){
-    var doc = new jsPDF();          
-	var elementHandler = {
-	  '#ignorePDF': function (element, renderer) {
-	    return true;
-	  }
-	};
-	var source = window.document.getElementsByTagName("body")[0];
-	doc.fromHTML(
-	    source,
-	    15,
-	    15,
-	    {
-	      'width': 180,'elementHandlers': elementHandler
-	    });
+function generatePDF() {
+	var dataDict = globalDataDict;
 
-	doc.output("dataurlnewwindow");
-}
+	var isCheckedList = [];
+	var checkBoxes = $("#side .headingCheckbox");
 
-function genPDF2(){
-	var pdf = new jsPDF();
-	pdf.addHTML($('body')[0], function () {
-	    pdf.save('Test.pdf');
-	});
-	var elementHandler = {
-	  '#ignorePDF': function (element, renderer) {
-	    return true;
-	  }
-	};
-	var source = window.document.getElementsByTagName("body")[0];
-	doc.fromHTML(
-	    source,
-	    15,
-	    15,
-	    {
-	      'width': 180,'elementHandlers': elementHandler
-	    });
+	for (var checkBoxIdx=0; checkBoxIdx < checkBoxes.length; checkBoxIdx++) {
+		var checkBox = checkBoxes[checkBoxIdx];
+		isCheckedList.push(checkBox.checked);
+	}
+	var page = 0;
 
-	doc.output("dataurlnewwindow");
+	for (var j=0; j < dataDict[globalHeadings[0]].length; j++){
+		var nextpage = page+1;
+		var header = `<div class="header">
+							<img src="Kaper Kidz KD Logo.png"/>
+							<div class="headerText">http://www.eleganter.com.au/</div>
+						</div>';`
+		var column = '<div class="column" onclick="promptColour(event)"> \
+								<div class="pagename" onclick="promptName(event)">Name</div> \
+								<div class="pagenum">'+nextpage+'</div> \
+							</div>';
+		if (j%10 == 0){
+			page++;
+			if ((page%2 == 0)&&!($("#singleSide").prop("checked"))){
+				var pagelayout = '<div class="page even" id="page'+page+'">'+column+header+'</div>';
+			} else {
+				var pagelayout = '<div class="page odd" id="page'+page+'">'+column+header+'</div>';
+			}
+			
+			$("#output").append(pagelayout);
+			
+		}
+		var inputrad="";
+
+		sku = "sku";
+		name = "name";
+		min = "csvvalue[2]";
+		carton =" csvvalue[3]";
+		url = "test";
+
+		minimumOrderQtyString = '<div><b>Min order qty: </b>'+min+'</div>';
+		cartonQtyString = '<div><b>Carton qty: </b>'+carton+'</div>';
+
+		fieldString = ''
+
+		for (key in dataDict) {
+			headingIdx = globalHeadings.indexOf(key);
+			if (isCheckedList[headingIdx]) {
+				if (["Image URL","Image","URL"].includes(key.trim())){
+					console.log("true");
+					url = dataDict[key][j];
+					console.log(url, "gottit");
+				} else{
+					fieldString += '<div><b>'+key+': </b>'+dataDict[key][j]+'</div>';
+				}
+				
+			}
+		}
+
+		var product = '<div class="productSpace"> \
+				    		<img src="'+url+'"/> \
+				    		<div class = "details"> \
+				    			<div class="sku">'+sku+'</div> \
+				    			<div class="name">'+name+'</div> \
+				    			'+fieldString+'\
+				    		</div> \
+				    	</div>'
+		var pagenum = "#page"+page;
+		$(pagenum).append(product);
+	}
+	
+
 }
