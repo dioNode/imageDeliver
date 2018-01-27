@@ -3,17 +3,19 @@
 $(document).ready(function(){
 
 	var globalDataDict = {};
+	var globalHeadings = [];
 
 	$("#filename").change(function(e) {
 		computeCSVFile(e);
-		//$("#filename").hide();
-		//$("#side").hide();
 
 		return false;
 
 	});
 
 	$("#genPDFBtn").click(function(){
+		$("#filename").hide();
+		$("#side").hide();
+		$("#genPDFBtn").hide();
 		generatePDF();
 	})
 })
@@ -34,11 +36,10 @@ function computeCSVFile(e) {
 			// Put all csv processing here
 			getDataDictionary(e);
 
-			headings = Object.keys(globalDataDict);
-			console.log(headings);
+			headings = globalHeadings;
 			for (var headingIdx=0; headingIdx < headings.length; headingIdx++) {
 				var heading = headings[headingIdx];
-				$("#side").append('<p><input type="checkbox" id="'+heading+'" checked>'+heading+'</p>');
+				$("#side").append('<p><input class="headingCheckbox" type="checkbox" id="'+heading+'" checked>'+heading+'</p>');
 			}
 			
 
@@ -52,6 +53,7 @@ function getDataDictionary(e) {
 	var csvval=e.target.result.split("\n");
 
 	var headings = csvval[0].split(',');
+	globalHeadings = headings;
 	var csvValueList = [];
 
 	for (var headingIdx=0; headingIdx < headings.length; headingIdx++){
@@ -94,5 +96,87 @@ function promptName(event){
 }
 
 function generatePDF() {
-	console.log(globalDataDict);
+	var dataDict = globalDataDict;
+
+	var isCheckedList = [];
+	var checkBoxes = $("#side .headingCheckbox");
+
+	for (var checkBoxIdx=0; checkBoxIdx < checkBoxes.length; checkBoxIdx++) {
+		var checkBox = checkBoxes[checkBoxIdx];
+		isCheckedList.push(checkBox.checked);
+	}
+	var page = 0;
+
+	for (var j=0; j < dataDict[globalHeadings[0]].length; j++){
+		var nextpage = page+1;
+		var header = `<div class="header">
+							<img src="Kaper Kidz KD Logo.png"/>
+							<div class="headerText">http://www.eleganter.com.au/</div>
+						</div>';`
+		var column = '<div class="column" onclick="promptColour(event)"> \
+								<div class="pagename" onclick="promptName(event)">Name</div> \
+								<div class="pagenum">'+nextpage+'</div> \
+							</div>';
+		if (j%10 == 0){
+			page++;
+			if ((page%2 == 0)&&!($("#singleSide").prop("checked"))){
+				var pagelayout = '<div class="page even" id="page'+page+'">'+column+header+'</div>';
+			} else {
+				var pagelayout = '<div class="page odd" id="page'+page+'">'+column+header+'</div>';
+			}
+			
+			$("#output").append(pagelayout);
+			
+		}
+		var inputrad="";
+
+		sku = "sku";
+		name = "name";
+		min = "csvvalue[2]";
+		carton =" csvvalue[3]";
+		url = "csvvalue[7]";
+		
+		//inputrad = inputrad+sku+name+min+disc+url;
+
+		minimumOrderQtyString = '<div><b>Min order qty: </b>'+min+'</div>';
+		cartonQtyString = '<div><b>Carton qty: </b>'+carton+'</div>';
+		
+		// fieldStrings = {minumumOrderQty: minimumOrderQtyString,
+		// 	cartonQty:cartonQtyString,
+		// 	originalPrice:originalPriceString,
+		// 	discountQty:discountQtyString,
+		// 	discount:discountString,
+		// 	discountedPrice:discountedPriceString};
+
+		fieldString = ''
+
+		for (key in dataDict) {
+			headingIdx = globalHeadings.indexOf(key);
+			if (isCheckedList[headingIdx]) {
+				fieldString += '<div><b>'+key+': </b>'+dataDict[key][j]+'</div>';
+			}
+		}
+
+		// for (key in fields){
+		// 	if (fields[key] == true){
+		// 		fieldString += fieldStrings[key];
+		// 		console.log(fieldStrings[key]);
+		// 	}
+		// }
+		
+		console.log(fieldString);
+
+		var product = '<div class="productSpace"> \
+				    		<img src="'+url+'"/> \
+				    		<div class = "details"> \
+				    			<div class="sku">'+sku+'</div> \
+				    			<div class="name">'+name+'</div> \
+				    			'+fieldString+'\
+				    		</div> \
+				    	</div>'
+		var pagenum = "#page"+page;
+		$(pagenum).append(product);
+	}
+	
+
 }
