@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<link href="style.css" type="text/css" rel="stylesheet"/>
+		<script src="https://code.jquery.com/jquery-1.12.3.js" integrity="sha256-1XMpEtA4eKXNNpXcJ1pmMPs8JV+nwLdEqwiJeCQEkyc="   crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+
+		<script src="script.js" type="text/javascript"></script>
+
+
+		<title>Image Deliverer</title>
+	</head>
+	<body>
+		<input type="file" name="filename" id="filename">
+		<div id="side">
+			<input type="checkbox" name="singleSide" id="singleSide">Single side
+			<p><input type="checkbox" id="minumumOrderQty" checked>Minimum order qty (C)</p>
+			<p><input type="checkbox" id="cartonQty" checked>Carton qty (D)</p>
+			<p><input type="checkbox" id="originalPrice" checked>Original Price (E)</p>
+			<p><input type="checkbox" id="discount" checked>Discount (F) - Blank defaults to 10%</p>
+			<p><input type="checkbox" id="discountQty" checked>Discount qty (G)</p>
+			<p><input type="checkbox" id="discountedPrice" checked>Discounted Price (Calculated)</p>
+			<p>Image URL in (H)</p>
+		</div>
+		<div id="output"></div>
+		<!--<button id="ignorePDF" onclick="demoFromHTML2()">Generate PDF</button>-->
+
+    </body>
+</html>

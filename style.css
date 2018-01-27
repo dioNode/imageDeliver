@@ -1,0 +1,134 @@
+body{
+	padding: 0;
+	margin: 0;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.productSpace {
+	padding-top: 0.3cm;
+	padding-bottom: 0.3cm;
+	border-bottom: dotted black 1.5px;
+	height: 172px;
+	width: 320px;
+}
+
+.odd .productSpace {
+	float: left;
+	margin-left: 0.3cm;
+}
+
+.even .productSpace {
+	float: right;
+	margin-right: 0.3cm;
+}
+
+.productSpace img{
+	float: left;
+	max-width: 5cm;
+	max-height: 3.33333cm;
+	margin: 0.2cm;
+}
+
+.productSpace .details {
+	float: right;
+	margin-top: 0.5cm;
+	margin-bottom: 0.5cm;
+	width: 3cm;
+	font-size: 10px;
+}
+
+.page{
+	width: 210mm;
+	height: 297mm;
+}
+
+.sku{
+	font-size: 12px;
+}
+
+.name{
+	font-size: 13px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2; /* number of lines to show */
+	line-height: 1.3;        /* fallback */
+   	max-height: 2.6;       /* fallback */
+}
+
+.column{
+	background-color: green;
+	width: 1.5cm;
+	height: 100%;
+	text-align: center;
+	cursor: pointer;
+}
+
+.even .column{
+	float: right;
+}
+
+.odd .column{
+	float: left;
+}
+
+.pagename{
+	color: white;
+	text-transform: uppercase;
+	font-size: 20px;
+	position: relative;
+	top: 1.5cm;
+	white-space: nowrap;
+}
+
+.pagenum{
+	color: white;
+	font-size: 30px;
+	position: relative;
+	top: 27cm;
+}
+
+.odd .column .pagename{
+	transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+}
+
+.even .column .pagename{
+	transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+}
+
+.header {
+	position: relative;
+	margin-left: 1.5cm;
+	float: left;
+	padding: 0;
+	margin-top: 1cm;
+}
+
+.header img{
+	display: inline;
+	vertical-align: middle;
+	height: 1cm;
+	margin-right: 0.4cm;
+}
+
+.header .headerText {
+	display: inline;
+	vertical-align: middle;
+	font-size: 0.7cm;
+	color: green;
+	border-bottom: solid green;
+	margin: 0;
+}
