@@ -135,18 +135,9 @@ function generatePDF() {
 		min = "csvvalue[2]";
 		carton =" csvvalue[3]";
 		url = "test";
-		
-		//inputrad = inputrad+sku+name+min+disc+url;
 
 		minimumOrderQtyString = '<div><b>Min order qty: </b>'+min+'</div>';
 		cartonQtyString = '<div><b>Carton qty: </b>'+carton+'</div>';
-		
-		// fieldStrings = {minumumOrderQty: minimumOrderQtyString,
-		// 	cartonQty:cartonQtyString,
-		// 	originalPrice:originalPriceString,
-		// 	discountQty:discountQtyString,
-		// 	discount:discountString,
-		// 	discountedPrice:discountedPriceString};
 
 		fieldString = ''
 
@@ -163,13 +154,6 @@ function generatePDF() {
 				
 			}
 		}
-
-		// for (key in fields){
-		// 	if (fields[key] == true){
-		// 		fieldString += fieldStrings[key];
-		// 		console.log(fieldStrings[key]);
-		// 	}
-		// }
 
 		var product = '<div class="productSpace"> \
 				    		<img src="'+url+'"/> \
