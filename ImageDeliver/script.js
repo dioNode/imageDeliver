@@ -134,7 +134,7 @@ function generatePDF() {
 		name = "name";
 		min = "csvvalue[2]";
 		carton =" csvvalue[3]";
-		url = "csvvalue[7]";
+		url = "test";
 		
 		//inputrad = inputrad+sku+name+min+disc+url;
 
@@ -153,7 +153,14 @@ function generatePDF() {
 		for (key in dataDict) {
 			headingIdx = globalHeadings.indexOf(key);
 			if (isCheckedList[headingIdx]) {
-				fieldString += '<div><b>'+key+': </b>'+dataDict[key][j]+'</div>';
+				if (["Image URL","Image","URL"].includes(key.trim())){
+					console.log("true");
+					url = dataDict[key][j];
+					console.log(url, "gottit");
+				} else{
+					fieldString += '<div><b>'+key+': </b>'+dataDict[key][j]+'</div>';
+				}
+				
 			}
 		}
 
@@ -163,8 +170,6 @@ function generatePDF() {
 		// 		console.log(fieldStrings[key]);
 		// 	}
 		// }
-		
-		console.log(fieldString);
 
 		var product = '<div class="productSpace"> \
 				    		<img src="'+url+'"/> \
