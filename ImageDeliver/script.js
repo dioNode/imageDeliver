@@ -28,89 +28,88 @@ $(document).ready(function(){
 			reader.onload = function(e) {
 				var csvval=e.target.result.split("\n");
 
-				//adjustFields();
+				adjustFields();
 
-				console.log(csvval);
 
-				//console.log(csvval.length);
-				// for (var j=0; j<csvval.length-1; j++){
-				// 	var nextpage = page+1;
-				// 	var header = '<div class="header"> \
-				// 						<img src="Kaper Kidz KD Logo.png"/> \
-				// 						<div class="headerText">http://www.eleganter.com.au/</div> \
-				// 					</div>';
-				// 	var column = '<div class="column" onclick="promptColour(event)"> \
-				// 							<div class="pagename" onclick="promptName(event)">Name</div> \
-				// 							<div class="pagenum">'+nextpage+'</div> \
-				// 						</div>';
-				// 	if (j%10 == 0){
-				// 		page++;
-				// 		if ((page%2 == 0)&&!($("#singleSide").prop("checked"))){
-				// 			var pagelayout = '<div class="page even" id="page'+page+'">'+column+header+'</div>';
-				// 		} else {
-				// 			var pagelayout = '<div class="page odd" id="page'+page+'">'+column+header+'</div>';
-				// 		}
+				console.log(csvval.length);
+				for (var j=0; j<csvval.length-1; j++){
+					var nextpage = page+1;
+					var header = '<div class="header"> \
+										<img src="Kaper Kidz KD Logo.png"/> \
+										<div class="headerText">http://www.eleganter.com.au/</div> \
+									</div>';
+					var column = '<div class="column" onclick="promptColour(event)"> \
+											<div class="pagename" onclick="promptName(event)">Name</div> \
+											<div class="pagenum">'+nextpage+'</div> \
+										</div>';
+					if (j%10 == 0){
+						page++;
+						if ((page%2 == 0)&&!($("#singleSide").prop("checked"))){
+							var pagelayout = '<div class="page even" id="page'+page+'">'+column+header+'</div>';
+						} else {
+							var pagelayout = '<div class="page odd" id="page'+page+'">'+column+header+'</div>';
+						}
 						
-				// 		$("#output").append(pagelayout);
+						$("#output").append(pagelayout);
 						
-				// 	}
-				// 	var csvvalue=csvval[j].split(",");
-				// 	var inputrad="";
-				// 	sku = csvvalue[0];
-				// 	name = csvvalue[1];
-				// 	min = csvvalue[2];
-				// 	carton = csvvalue[3];
-				// 	price = parseInt(csvvalue[4]).toFixed(2);
-				// 	discount = csvvalue[5];
-				// 	if (discount == ""){
-				// 		discount = 10;
-				// 	}
-				// 	disc = csvvalue[6];
-				// 	url = csvvalue[7];
-				// 	console.log(url);
-				// 	discountedPrice = (parseInt(price.replace('$','')) * (1-discount/100)).toFixed(2);
-				// 	//console.log(discountedPrice);
+					}
+					var csvvalue=csvval[j].split(",");
+					var inputrad="";
+					sku = csvvalue[0];
+					name = csvvalue[1];
+					min = csvvalue[2];
+					carton = csvvalue[3];
+					price = parseInt(csvvalue[4]).toFixed(2);
+					discount = csvvalue[5];
+					if (discount == ""){
+						discount = 10;
+					}
+					disc = csvvalue[6];
+					url = csvvalue[7];
+					console.log(url);
+					discountedPrice = (parseInt(price.replace('$','')) * (1-discount/100)).toFixed(2);
+					//console.log(discountedPrice);
 
-				// 	inputrad = inputrad+sku+name+min+disc+url;
+					inputrad = inputrad+sku+name+min+disc+url;
 
-				// 	minimumOrderQtyString = '<div><b>Min order qty: </b>'+min+'</div>';
-				// 	cartonQtyString = '<div><b>Carton qty: </b>'+carton+'</div>';
-				// 	originalPriceString = '<div><b>Original price:</b> $'+price+'</div>';
-				// 	discountQtyString = '<div><b>Discount qty: </b>'+disc+'</div>';
-				// 	discountString = '<div><b>Discount:</b>'+discount+'%</div>';
-				// 	discountedPriceString = '<div><b>Disc price:</b> $'+discountedPrice+'</div>';
+					minimumOrderQtyString = '<div><b>Min order qty: </b>'+min+'</div>';
+					cartonQtyString = '<div><b>Carton qty: </b>'+carton+'</div>';
+					originalPriceString = '<div><b>Original price:</b> $'+price+'</div>';
+					discountQtyString = '<div><b>Discount qty: </b>'+disc+'</div>';
+					discountString = '<div><b>Discount:</b>'+discount+'%</div>';
+					discountedPriceString = '<div><b>Disc price:</b> $'+discountedPrice+'</div>';
 
-				// 	fieldStrings = {minumumOrderQty: minimumOrderQtyString,
-				// 		cartonQty:cartonQtyString,
-				// 		originalPrice:originalPriceString,
-				// 		discountQty:discountQtyString,
-				// 		discount:discountString,
-				// 		discountedPrice:discountedPriceString};
+					fieldStrings = {minumumOrderQty: minimumOrderQtyString,
+						cartonQty:cartonQtyString,
+						originalPrice:originalPriceString,
+						discountQty:discountQtyString,
+						discount:discountString,
+						discountedPrice:discountedPriceString};
 
-				// 	fieldString = ''
+					fieldString = ''
 
-				// 	for (key in fields){
-				// 		if (fields[key] == true){
-				// 			fieldString += fieldStrings[key];
-				// 			console.log(fieldStrings[key]);
-				// 		}
-				// 	}
+					for (key in fields){
+						if (fields[key] == true){
+							fieldString += fieldStrings[key];
+							console.log(fieldStrings[key]);
+						}
+					}
 					
-				// 	console.log(fieldString);
+					console.log(fieldString);
 
-				// 	var product = '<div class="productSpace"> \
-				// 			    		<img src="'+url+'"/> \
-				// 			    		<div class = "details"> \
-				// 			    			<div class="sku">'+sku+'</div> \
-				// 			    			<div class="name">'+name+'</div> \
-				// 			    			'+fieldString+'\
-				// 			    		</div> \
-				// 			    	</div>'
-				// 	var pagenum = "#page"+page;
-				// 	$(pagenum).append(product);
-				// 	//console.log(inputrad);
+					var product = '<div class="productSpace"> \
+							    		<img src="'+url+'"/> \
+							    		<div class = "details"> \
+							    			<div class="sku">'+sku+'</div> \
+							    			<div class="name">'+name+'</div> \
+							    			'+fieldString+'\
+							    		</div> \
+							    	</div>'
+					var pagenum = "#page"+page;
+					$(pagenum).append(product);
+					//console.log(inputrad);
 					
-				// };				
+				};				
 			}
 			reader.readAsText(e.target.files.item(0));
 		}
