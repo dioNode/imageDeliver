@@ -40,6 +40,8 @@ body{
 .page{
 	width: 210mm;
 	height: 297mm;
+	background-size: 100vw 100vh;
+	-webkit-print-color-adjust:exact;
 }
 
 .sku{
@@ -58,7 +60,7 @@ body{
 }
 
 .column{
-	background-color: green;
+	/*background-color: green;*/
 	width: 1.5cm;
 	height: 100%;
 	text-align: center;
@@ -86,7 +88,7 @@ body{
 	color: white;
 	font-size: 30px;
 	position: relative;
-	top: 27cm;
+	top: 27.5cm;
 }
 
 .odd .column .pagename{

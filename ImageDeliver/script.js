@@ -7,18 +7,40 @@ $(document).ready(function(){
 
 	$("#filename").change(function(e) {
 		computeCSVFile(e);
-
 		return false;
+	});
 
+	$("#coverFile").change(function(e) {
+		computeCoverFile(e);
+		return false;
+	});
+
+	$("#backgroundFile").change(function(e) {
+		computeBackgroundFile(e);
+		return false;
 	});
 
 	$("#genPDFBtn").click(function(){
-		$("#filename").hide();
-		$("#side").hide();
-		$("#genPDFBtn").hide();
+		$("#settings").hide();
 		generatePDF();
 	})
 })
+
+function computeBackgroundFile(e) {
+	assertImage(e, "backgroundFile");
+}
+
+function computeCoverFile(e) {
+	assertImage(e, "coverFile");
+}
+
+function assertImage(e, id) {
+	var ext = $("input#"+id).val().split(".").pop().toLowerCase();
+	if($.inArray(ext, ["jpg", "png","gif","jpeg"]) == -1) {
+		alert('Please upload an image');
+		return false;
+	}
+}
 
 /** Generates a dictionary containing all the csv file data **/
 function computeCSVFile(e) {
@@ -79,7 +101,6 @@ function adjustFields(){
 			fields[key] = false;
 		}
 	}
-	console.log(fields);
 }
 
 function promptColour(event){
@@ -101,6 +122,15 @@ function generatePDF() {
 	var isCheckedList = [];
 	var checkBoxes = $("#side .headingCheckbox");
 
+	var backgroundImg = $("input#backgroundFile").val().split('\\');
+	backgroundImg = backgroundImg[backgroundImg.length-1]
+	var coverImg = $("input#coverFile").val().split('\\');
+	coverImg = coverImg[coverImg.length-1];
+
+	coverPage = `<div class=page id="coverPage"></div>`;
+	$("#output").append(coverPage);
+
+
 	for (var checkBoxIdx=0; checkBoxIdx < checkBoxes.length; checkBoxIdx++) {
 		var checkBox = checkBoxes[checkBoxIdx];
 		isCheckedList.push(checkBox.checked);
@@ -119,7 +149,7 @@ function generatePDF() {
 							</div>';
 		if (j%10 == 0){
 			page++;
-			if ((page%2 == 0)&&!($("#singleSide").prop("checked"))){
+			if ((page%2 == 0)||($("#singleSide").prop("checked"))){
 				var pagelayout = '<div class="page even" id="page'+page+'">'+column+header+'</div>';
 			} else {
 				var pagelayout = '<div class="page odd" id="page'+page+'">'+column+header+'</div>';
@@ -145,9 +175,7 @@ function generatePDF() {
 			headingIdx = globalHeadings.indexOf(key);
 			if (isCheckedList[headingIdx]) {
 				if (["Image URL","Image","URL"].includes(key.trim())){
-					console.log("true");
 					url = dataDict[key][j];
-					console.log(url, "gottit");
 				} else{
 					fieldString += '<div><b>'+key+': </b>'+dataDict[key][j]+'</div>';
 				}
@@ -167,5 +195,12 @@ function generatePDF() {
 		$(pagenum).append(product);
 	}
 	
+	backgroundImg = "Image/"+backgroundImg;
+	$(".page").css("background","url('"+backgroundImg+"')");
+	$(".page").css("background-size","100% 100%");
+
+	coverImg = "Image/"+coverImg;
+	$("#coverPage").css("background","url('"+coverImg+"')");
+	$("#coverPage").css("background-size","100% 100%");
 
 }

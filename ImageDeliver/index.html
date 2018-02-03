@@ -12,12 +12,18 @@
 		<title>Image Deliverer</title>
 	</head>
 	<body>
-		<input type="file" name="filename" id="filename">
-		<div id="side">
-			<input type="checkbox" name="singleSide" id="singleSide">Single side
+		<div id="settings">
+			CSV File: <input type="file" name="filename" id="filename" value=".">
+			<br>
+			Cover File: <input type="file" name="coverFile" id="coverFile">
+			<br>
+			Background File: <input type="file" name="backgroundFile" id="backgroundFile">
+			<div id="side">
+				<input type="checkbox" name="singleSide" id="singleSide">Single side
+			</div>
+			
+			<button id="genPDFBtn">Generate PDF</button>
 		</div>
 		<div id="output"></div>
-		<button id="genPDFBtn">Generate PDF</button>
-
     </body>
 </html>
