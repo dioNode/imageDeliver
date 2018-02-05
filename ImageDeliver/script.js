@@ -144,7 +144,7 @@ function generatePDF() {
 							<div class="headerText">http://www.eleganter.com.au/</div>
 						</div>';`
 		var column = '<div class="column" onclick="promptColour(event)"> \
-								<div class="pagename" onclick="promptName(event)">Name</div> \
+								<div class="pagename"></div> \
 								<div class="pagenum">'+nextpage+'</div> \
 							</div>';
 		if (j%10 == 0){
@@ -159,15 +159,6 @@ function generatePDF() {
 			
 		}
 		var inputrad="";
-
-		sku = "sku";
-		name = "name";
-		min = "csvvalue[2]";
-		carton =" csvvalue[3]";
-		url = "test";
-
-		minimumOrderQtyString = '<div><b>Min order qty: </b>'+min+'</div>';
-		cartonQtyString = '<div><b>Carton qty: </b>'+carton+'</div>';
 
 		fieldString = ''
 
@@ -186,8 +177,6 @@ function generatePDF() {
 		var product = '<div class="productSpace"> \
 				    		<img src="'+url+'"/> \
 				    		<div class = "details"> \
-				    			<div class="sku">'+sku+'</div> \
-				    			<div class="name">'+name+'</div> \
 				    			'+fieldString+'\
 				    		</div> \
 				    	</div>'

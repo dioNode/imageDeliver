@@ -9,7 +9,7 @@ body{
 	padding-bottom: 0.3cm;
 	border-bottom: dotted black 1.5px;
 	height: 172px;
-	width: 320px;
+	width: 48%;
 }
 
 .odd .productSpace {
@@ -24,16 +24,15 @@ body{
 
 .productSpace img{
 	float: left;
-	max-width: 5cm;
-	max-height: 3.33333cm;
+	width: 44%;
 	margin: 0.2cm;
 }
 
 .productSpace .details {
-	float: right;
+	float: left;
 	margin-top: 0.5cm;
 	margin-bottom: 0.5cm;
-	width: 3cm;
+	width: 52%;
 	font-size: 10px;
 }
 
@@ -60,19 +59,14 @@ body{
 }
 
 .column{
-	/*background-color: green;*/
 	width: 1.5cm;
 	height: 100%;
 	text-align: center;
 	cursor: pointer;
-}
-
-.even .column{
+	position: absolute;
 	float: right;
-}
-
-.odd .column{
-	float: left;
+	left: 19.35cm;
+	margin-top: 0.7cm;
 }
 
 .pagename{
