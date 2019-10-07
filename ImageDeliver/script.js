@@ -15,6 +15,12 @@ $(document).ready(function(){
 		return false;
 	});
 
+	$("#finalFile").change(function(e) {
+		computeFinalFile(e);
+		return false;
+	});
+
+
 	$("#backgroundFile").change(function(e) {
 		computeBackgroundFile(e);
 		return false;
@@ -32,6 +38,10 @@ function computeBackgroundFile(e) {
 
 function computeCoverFile(e) {
 	assertImage(e, "coverFile");
+}
+
+function computeFinalFile(e) {
+	assertImage(e, "finalFile");
 }
 
 function assertImage(e, id) {
@@ -126,6 +136,8 @@ function generatePDF() {
 	backgroundImg = backgroundImg[backgroundImg.length-1]
 	var coverImg = $("input#coverFile").val().split('\\');
 	coverImg = coverImg[coverImg.length-1];
+	var finalImg = $("input#finalFile").val().split('\\');
+	finalImg = finalImg[finalImg.length-1];
 
 	coverPage = `<div class=page id="coverPage"></div>`;
 	$("#output").append(coverPage);
@@ -139,10 +151,12 @@ function generatePDF() {
 
 	for (var j=0; j < dataDict[globalHeadings[0]].length; j++){
 		var nextpage = page+1;
+		// var header = `<div class="header">
+		// 					<img src="Kaper Kidz KD Logo.png"/>
+		// 					<div class="headerText">http://www.eleganter.com.au/</div>
+		// 				</div>`;
 		var header = `<div class="header">
-							<img src="Kaper Kidz KD Logo.png"/>
-							<div class="headerText">http://www.eleganter.com.au/</div>
-						</div>';`
+					</div>`;
 		var column = '<div class="column" onclick="promptColour(event)"> \
 								<div class="pagename"></div> \
 								<div class="pagenum">'+nextpage+'</div> \
@@ -183,6 +197,9 @@ function generatePDF() {
 		var pagenum = "#page"+page;
 		$(pagenum).append(product);
 	}
+
+	finalPage = `<div class=page id="finalPage"></div>`;
+	$("#output").append(finalPage);
 	
 	backgroundImg = "Image/"+backgroundImg;
 	$(".page").css("background","url('"+backgroundImg+"')");
@@ -191,5 +208,9 @@ function generatePDF() {
 	coverImg = "Image/"+coverImg;
 	$("#coverPage").css("background","url('"+coverImg+"')");
 	$("#coverPage").css("background-size","100% 100%");
+
+	finalImg = "Image/"+finalImg;
+	$("#finalPage").css("background","url('"+finalImg+"')");
+	$("#finalPage").css("background-size","100% 100%");
 
 }
