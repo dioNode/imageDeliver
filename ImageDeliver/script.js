@@ -198,19 +198,32 @@ function generatePDF() {
 		$(pagenum).append(product);
 	}
 
+	// Add final page
 	finalPage = `<div class=page id="finalPage"></div>`;
 	$("#output").append(finalPage);
 	
+	// Apply css to elements
 	backgroundImg = "Image/"+backgroundImg;
 	$(".page").css("background","url('"+backgroundImg+"')");
 	$(".page").css("background-size","100% 100%");
 
-	coverImg = "Image/"+coverImg;
-	$("#coverPage").css("background","url('"+coverImg+"')");
-	$("#coverPage").css("background-size","100% 100%");
+	
 
-	finalImg = "Image/"+finalImg;
-	$("#finalPage").css("background","url('"+finalImg+"')");
-	$("#finalPage").css("background-size","100% 100%");
+	if (coverImg == "") {
+		$("#coverPage").hide();
+	} else {
+		coverImg = "Image/"+coverImg;
+		$("#coverPage").css("background","url('"+coverImg+"')");
+		$("#coverPage").css("background-size","100% 100%");
+	}
+
+	if (finalImg == "") {
+		$("#finalPage").hide();
+	} else {
+		finalImg = "Image/"+finalImg;
+		$("#finalPage").css("background","url('"+finalImg+"')");
+		$("#finalPage").css("background-size","100% 100%");
+	}
+	
 
 }
